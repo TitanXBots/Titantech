@@ -254,4 +254,7 @@ async def delete_files(messages, client, k):
 
     # Edit message with the button
     await k.edit_text("<b><i>Your Video / File Is Successfully Deleted ✅</i></b>", reply_markup=keyboard)
-
+    try:
+  #code
+except Exception as e:
+  print(e)
