@@ -3,13 +3,10 @@ import logging
 from telegram import Bot
 import datetime
 
-# Replace 'YOUR_TOKEN' with your bot's API token
-TOKEN = 'YOUR_TOKEN'
-# Replace 'LOG_CHANNEL_ID' with your log channel's ID
-LOG_CHANNEL_ID = '@your_log_channel'
 
-# Initialize bot
-bot = Bot(token=TOKEN)
+# Replace 'LOG_CHANNEL_ID' with your log channel's ID
+LOG_CHANNEL_ID = '-1002132998073'
+
 
 def send_restart_message():
     # Current date and time
