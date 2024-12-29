@@ -7,14 +7,7 @@ from pyrogram import Client, filters
 # Configuration (Move to a config file/environment variables for production)
 LOG_CHANNEL_ID = -1002132998073  # Replace with your log channel ID, keep it as integer
 
-RESTART_TXT = """
-<b>Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !</b>
-
-📅 Dᴀᴛᴇ : <code>{date}</code>
-⏰ Tɪᴍᴇ : <code>{time}</code>
-🌐 Tɪᴍᴇᴢᴏɴᴇ : <code>Asia/Kolkata</code>
-🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: <code>v2.7.1 [ Sᴛᴀʙʟᴇ ]</code>
-"""
+RESTART_TXT = "Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !\n\n📅 Dᴀᴛᴇ : {date}\n⏰ Tɪᴍᴇ : {time}\n🌐 Tɪᴍᴇᴢᴏɴᴇ : Asia/Kolkata\n🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: v2.7.1 [ Sᴛᴀʙʟᴇ ]"
 
 # Setup Logging
 logging.basicConfig(
@@ -32,13 +25,13 @@ async def send_restart_message(client, message):
         formatted_text = RESTART_TXT.format(date=date_str, time=time_str)
 
         # Send restart message to the user
-        await message.reply_text(formatted_text, parse_mode="html") # Added Parse Mode HTML
+        await message.reply_text(formatted_text)
         logger.info(f"Restart command received from user {message.from_user.id} in chat {message.chat.id}.")
 
         # Send restart message to the log channel (optional)
         if LOG_CHANNEL_ID:
             try:
-                await client.send_message(LOG_CHANNEL_ID, formatted_text, parse_mode="html") # Added Parse Mode HTML
+                await client.send_message(LOG_CHANNEL_ID, formatted_text)
                 logger.info(f"Sent restart notification to the log channel {LOG_CHANNEL_ID}")
             except Exception as e:
                 logger.error(f"Failed to send restart notification to the log channel: {e}")
