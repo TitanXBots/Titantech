@@ -5,9 +5,17 @@ import sys  # Import sys for os.execv
 from pyrogram import Client, filters
 
 # Configuration (Move to a config file/environment variables for production)
-LOG_CHANNEL_ID = -1002313688533  # Replace with your log channel ID, keep it as integer
+LOG_CHANNEL_ID = -1002313688533 # Replace with your log channel ID, keep it as integer
+ADMIN_USER_IDS = [5356695781] # Replace with actual Admin IDs
 
-RESTART_TXT = "Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !\n\n📅 Dᴀᴛᴇ : {date}\n⏰ Tɪᴍᴇ : {time}\n🌐 Tɪᴍᴇᴢᴏɴᴇ : Asia/Kolkata\n🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: v2.7.1 [ Sᴛᴀʙʟᴇ ]"
+RESTART_TXT = """
+Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !
+
+📅 Dᴀᴛᴇ : {date}
+⏰ Tɪᴍᴇ : {time}
+🌐 Tɪᴍᴇᴢᴏɴᴇ : Asia/Kolkata
+🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: v2.7.1 [ Sᴛᴀʙʟᴇ ]
+"""
 
 # Setup Logging
 logging.basicConfig(
@@ -16,7 +24,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)  # Use __name__ instead of name
 
-@Client.on_message(filters.command("restart") & filters.private)
+@Client.on_message(filters.command("restart") & filters.private & filters.user(ADMIN_USER_IDS))
 async def send_restart_message(client, message):
     try:
         now = datetime.datetime.now()
@@ -47,6 +55,10 @@ async def send_restart_message(client, message):
             message.chat.id,
             "An error occurred during restart. Please check the logs.",
         )
+
+@Client.on_message(filters.command("restart") & filters.private & ~filters.user(ADMIN_USER_IDS))
+async def not_admin_reply(client, message):
+  await message.reply_text("You are not authorized to use this command.")
 
 
 if __name__ == '__main__':  # Use __name__ for the main check
