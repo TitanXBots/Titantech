@@ -57,3 +57,5 @@ async def send_restart_message(client, message):
 
 
 if __name__ == '__main__':  # Use __name__ for the main check
+    app = Client("my_bot")  # Initialize your bot client (replace "my_bot" with your session name)
+    app.run()  # Start the bot
