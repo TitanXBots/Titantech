@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @Client.on_message(filters.command("restart") & filters.private)
-async def send_restart_message(client:Client, message:Message):
+async def send_restart_message(client, message):
     try:
         now = datetime.datetime.now()
         date_str = now.strftime("%Y-%m-%d")
