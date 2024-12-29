@@ -21,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-@Client.on_message(filters.command("restart") & filters.user(ADMINS))
+@Client.on_message(filters.command("restart") & filters.private)
 async def send_restart_message(client:Client, message:Message):
     try:
         now = datetime.datetime.now()
