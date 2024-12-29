@@ -9,4 +9,3 @@ dnspython
 aiohttp
 humanize
 requests
-sys
