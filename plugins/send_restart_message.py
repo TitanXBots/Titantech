@@ -1,7 +1,7 @@
 import logging
 import datetime
 import os
-from pyrogram import Client, filters
+from bot import Bot
 
 # Configuration (Move to a config file/environment variables for production)
 LOG_CHANNEL_ID = '-1002132998073'  # Replace with your log channel ID
@@ -21,8 +21,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-@Client.on_message(filters.command("restart"))
-async def send_restart_message(client, message):
+@Bot.on_message(filters.command("restart") & filters.user(ADMINS))
+async def send_restart_message(bot: Bot, message: Message):
     try:
         now = datetime.datetime.now()
         date_str = now.strftime("%Y-%m-%d")
@@ -30,13 +30,13 @@ async def send_restart_message(client, message):
         formatted_text = RESTART_TXT.format(date_str, time_str)
 
         # Send restart message to the user
-        await client.send_message(message.chat.id, formatted_text)
+        await Bot.send_message(message.chat.id, formatted_text)
         logger.info(f"Restart command received from user {message.from_user.id} in chat {message.chat.id}. Sending restart message.")
 
         # Send restart message to the log channel (optional)
         if LOG_CHANNEL_ID:
             try:
-                await client.send_message(LOG_CHANNEL_ID, formatted_text)
+                await Bot.send_message(LOG_CHANNEL_ID, formatted_text)
                 logger.info(f"Sent restart notification to the log channel {LOG_CHANNEL_ID}")
             except Exception as e:
                logger.error(f"Failed to send restart notification to the log channel: {e}")
