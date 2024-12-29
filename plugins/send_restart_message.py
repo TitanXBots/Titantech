@@ -5,7 +5,7 @@ import sys  # Import sys for os.execv
 from pyrogram import Client, filters
 
 # Configuration (Move to a config file/environment variables for production)
-LOG_CHANNEL_ID = -1002132998073  # Replace with your log channel ID, keep it as integer
+LOG_CHANNEL_ID = -1002313688533  # Replace with your log channel ID, keep it as integer
 
 RESTART_TXT = "Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !\n\n📅 Dᴀᴛᴇ : {date}\n⏰ Tɪᴍᴇ : {time}\n🌐 Tɪᴍᴇᴢᴏɴᴇ : Asia/Kolkata\n🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: v2.7.1 [ Sᴛᴀʙʟᴇ ]"
 
