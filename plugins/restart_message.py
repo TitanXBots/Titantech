@@ -4,7 +4,7 @@ import os
 import sys  # Import sys for os.execv
 import asyncio 
 from pyrogram import Client, filters
-from script import RESTART_TXT
+from Script import script
 
 # Configuration (Move to a config file/environment variables for production)
 LOG_CHANNEL_ID = -1002313688533 # Replace with your log channel ID, keep it as integer
