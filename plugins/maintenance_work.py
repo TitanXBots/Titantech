@@ -4,7 +4,7 @@ import os
 from os import environ
 from pymongo import MongoClient
 import re
-from info import ADMINS
+from config import ADMINS
 
 client = MongoClient(DB_URI)
 db = client[DB_PASS]
