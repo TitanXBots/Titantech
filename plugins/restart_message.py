@@ -4,12 +4,20 @@ import os
 import sys  # Import sys for os.execv
 import asyncio 
 from pyrogram import Client, filters
-from Script import RESTART_TXT
 
 # Configuration (Move to a config file/environment variables for production)
 LOG_CHANNEL_ID = -1002313688533 # Replace with your log channel ID, keep it as integer
 ADMIN_USER_IDS = [5356695781] # Replace with actual Admin IDs
 
+
+RESTART_TXT = """
+Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !
+
+📅 Dᴀᴛᴇ : {date}
+⏰ Tɪᴍᴇ : {time}
+🌐 Tɪᴍᴇᴢᴏɴᴇ : Asia/Kolkata
+🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: v2.7.1 [ Sᴛᴀʙʟᴇ ]
+"""
 
 # Setup Logging
 logging.basicConfig(
