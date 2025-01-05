@@ -1,29 +1,23 @@
+
 from pyrogram import Client, filters
-from pyrogram.types import *
-import os
-from os import environ
+from pyrogram.types import Message
 from pymongo import MongoClient
+import os
 import re
+from config import *
 
 client = MongoClient(DB_URI)
 db = client[DB_PASS]
 collection = db[COLLECTION_NAME]
 
-id_pattern = re.compile(r'^.\d+$')
+id_pattern = re.compile(r'^\d+$')  # Adjusted to match only numeric IDs
 
-API_ID = int(os.environ.get('API_ID', ''))
-API_HASH = os.environ.get('API_HASH', '')
-BOT_TOKEN = os.environ.get('BOT_TOKEN','')
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '').split()]
+ADMINS = [int(admin) for admin in os.environ.get('ADMINS', '').split() if id_pattern.match(admin)]
 
-user = Client(name='maintenancebot', api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 async def convertmsg(msg: str) -> str:
     words = msg.lower().split()
-    if len(words) > 1:
-        return " ".join(words[1:])
-    else:
-        return ""
+    return " ".join(words[1:]) if len(words) > 1 else ""
 
 async def checkmsg(msg: str) -> bool:
     if msg == 'on':
@@ -33,12 +27,12 @@ async def checkmsg(msg: str) -> bool:
     else:
         return None
 
-@user.on_message(filters.command("maintenance") & filters.user(ADMINS))
+@Client.on_message(filters.command("maintenance") & filters.user(ADMINS))
 async def maintenance(client: Client, message: Message):
     user_id = message.from_user.id
     m = message.text
 
-    if not message.text.split()[1:]:
+    if len(message.command) < 2:  # Check if the command has the required argument
         await message.reply_text("Correct the command format. Usage: /maintenance [on/off]")
         return
 
@@ -70,20 +64,18 @@ async def maintenance(client: Client, message: Message):
             collection.insert_one({"admin_id": user_id, "maintenance": "off"})
             await message.reply_text("Maintenance mode turned off (new entry).")
     else:
-        await message.reply_text("None")
+        await message.reply_text("Invalid command. Please use 'on' or 'off'.")
 
-@user.on_message(filters.command("start"))
+@Client.on_message(filters.command("start"))
 async def start(client: Client, message: Message):
-  user_id = message.from_user.id
-  check_msg = collection.find_one({"admin_id": user_id})
-  if check_msg and user_id not in ADMINS:
-      on_off = check_msg["maintenance"]
-      if on_off == 'on':
-          await message.reply_text("Maintenance mode is currently active. Please try again later.")
-      else:
-          await message.reply_text("Welcome to the bot!")
-  else:
-      await message.reply_text("Welcome to the bot!")
+    user_id = message.from_user.id
+    check_msg = collection.find_one({"admin_id": user_id})
+    if check_msg and user_id not in ADMINS:
+        on_off = check_msg["maintenance"]
+        if on_off == 'on':
+            await message.reply_text("Maintenance mode is currently active. Please try again later.")
+            return  # Added return to avoid sending the welcome message
+    await message.reply_text("Welcome to the bot!")
 
 print("Running")
 user.run()
