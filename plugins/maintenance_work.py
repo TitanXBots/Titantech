@@ -6,9 +6,7 @@ from pymongo import MongoClient
 import re
 from config import ADMINS
 
-client = MongoClient(DB_URI)
-db = client[DB_PASS]
-collection = db[COLLECTION_NAME]
+
 
 id_pattern = re.compile(r'^.\d+$')
 
