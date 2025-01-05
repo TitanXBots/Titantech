@@ -6,8 +6,8 @@ import os
 import re
 from config import *
 
-client = MongoClient(DB_URI)
-db = client[DB_PASS]
+client = pymongo.MongoClient(DB_URI)
+db = client[DB_NAME]
 collection = db[COLLECTION_NAME]
 
 id_pattern = re.compile(r'^\d+$')  # Adjusted to match only numeric IDs
