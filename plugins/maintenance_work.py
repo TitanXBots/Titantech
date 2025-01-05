@@ -1,14 +1,10 @@
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from pymongo import MongoClient
 import os
 import re
 from config import *
 
-client = pymongo.MongoClient(DB_URI)
-db = client[DB_NAME]
-collection = db[COLLECTION_NAME]
 
 id_pattern = re.compile(r'^\d+$')  # Adjusted to match only numeric IDs
 
