@@ -9,7 +9,7 @@ from bot import Bot
 from config import *
 from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
-
+import logging
 
 titanxofficials = FILE_AUTO_DELETE
 titandeveloper = titanxofficials
@@ -259,3 +259,28 @@ async def delete_files(messages, client, k):
               logging.error(f"Error editing the message: {e}")
         except Exception as e:
               logging.error(f"An unexpected error occurred: {e}")
+
+
+
+
+
+# Example function to send a message to the log channel
+async def send_log_message(user_id, user_name):
+    log_channel_id = "-1002313688533"  # Replace with your log channel ID
+
+    NEW_USER_TXT = """#New_User {}
+    ≈ ɪᴅ:- {}
+    ≈ ɴᴀᴍᴇ:- {}"""
+
+    message = NEW_USER_TXT.format(user_name, user_id, user_name)
+    
+    # Assuming 'bot' is your bot instance and using async send method
+    await bot.send_message(log_channel_id, message)
+
+# Example usage when a new user starts
+async def on_new_user(user):
+    user_id = user.id
+    user_name = user.first_name  # Or any other user identifier
+    await send_log_message(user_id, user_name)
+
+# Note: Make sure to run this in an asynchronous context.
