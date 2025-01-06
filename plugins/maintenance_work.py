@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import *
 from pymongo import MongoClient
-from config import DB_URI, DB_NAME 
+from config import DB_URI, DB_NAME, ADMINS
 
 client = MongoClient(DB_URI)
 db = client[DB_NAME]
