@@ -4,6 +4,7 @@ from pyrogram.types import Message
 import os
 import re
 from config import *
+from database.database import add_user, del_user, full_userbase, present_user
 
 
 id_pattern = re.compile(r'^\d+$')  # Adjusted to match only numeric IDs
