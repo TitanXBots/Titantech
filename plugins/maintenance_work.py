@@ -4,12 +4,11 @@ from pyrogram.types import Message
 import os
 import re
 from config import *
-from database.database import add_user, del_user, full_userbase, present_user
 
 
 id_pattern = re.compile(r'^\d+$')  # Adjusted to match only numeric IDs
 
-ADMINS = [int(admin) for admin in os.environ.get('ADMINS', '').split() if id_pattern.match(admin)]
+ADMINS = [int(admin) for admin in os.environ.get('ADMINS', '5356695781').split() if id_pattern.match(admin)]
 
 
 async def convertmsg(msg: str) -> str:
@@ -24,7 +23,7 @@ async def checkmsg(msg: str) -> bool:
     else:
         return None
 
-@Client.on_message(filters.command("maintenance") & filters(ADMINS))
+@Client.on_message(filters.command("maintenance") & filters.user(ADMINS))
 async def maintenance(client: Client, message: Message):
     user_id = message.from_user.id
     m = message.text
