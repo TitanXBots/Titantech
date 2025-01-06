@@ -31,7 +31,7 @@ async def checkmsg(msg: str) -> bool:
     else:
         return None
 
-@user.on_message(filters.command("maintenance") & filters.user(ADMINS))
+@user.on_message(filters.command("maintenance") & filters.User(ADMINS))
 async def maintenance(client: Client, message: Message):
     user_id = message.from_user.id
     m = message.text
