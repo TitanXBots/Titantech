@@ -3,10 +3,6 @@ from pyrogram.types import *
 import os
 from os import environ
 import re
-from config import DB_URI, DB_NAME
-
-dbclient = pymongo.MongoClient(DB_URI)
-database = dbclient[DB_NAME]
 
 
 id_pattern = re.compile(r'^.\d+$')
