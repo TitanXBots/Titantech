@@ -32,7 +32,7 @@ async def start_command(client: Client , message: Message):
             pass
 
     check_msg = collection.find_one({"admin_id": user_id})
-    if check_msg and user_id not in ADMINS:
+    if not check_msg and user_id not in ADMINS:
         on_off = check_msg["maintenance"]
         if on_off == 'on':
             await message.reply_text("Maintenance mode is currently active. Please try again later.")
