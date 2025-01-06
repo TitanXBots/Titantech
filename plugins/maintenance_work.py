@@ -2,21 +2,18 @@ from pyrogram import Client, filters
 from pyrogram.types import *
 import os
 from os import environ
-from pymongo import MongoClient
+from config import DB_URI, DB_NAME
 import re
 
-client = MongoClient(DB_URI)
-db = client[DB_PASS]
-collection = db[COLLECTION_NAME]
+dbclient = pymongo.MongoClient(DB_URI)
+database = dbclient[DB_NAME]
 
 id_pattern = re.compile(r'^.\d+$')
 
-API_ID = int(os.environ.get('API_ID', ''))
-API_HASH = os.environ.get('API_HASH', '')
-BOT_TOKEN = os.environ.get('BOT_TOKEN','')
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '').split()]
 
-user = Client(name='maintenancebot', api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '5356695781').split()]
+
+
 
 async def convertmsg(msg: str) -> str:
     words = msg.lower().split()
