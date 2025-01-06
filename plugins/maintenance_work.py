@@ -3,6 +3,7 @@ from pyrogram.types import *
 import os
 from os import environ
 from config import DB_URI, DB_NAME
+from pymongo import MongoClient
 import re
 
 dbclient = pymongo.MongoClient(DB_URI)
