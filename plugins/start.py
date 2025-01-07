@@ -275,24 +275,38 @@ async def delete_files(messages , client , k):
             logging.error(f"An unexpected error occurred: {e}")
 
 
-# Example function to send a message to the log channel
-async def send_log_message(user_id , user_name):
-    log_channel_id = "-1002313688533"  # Replace with your log channel ID
-
-    NEW_USER_TXT = """#New_User {}
-    ≈ ɪᴅ:- {}
-    ≈ ɴᴀᴍᴇ:- {}"""
-
-    message = NEW_USER_TXT.format(user_name , user_id , user_name)
-
-    # Assuming 'bot' is your bot instance and using async send method
-    await bot.send_message(log_channel_id , message)
 
 
-# Example usage when a new user starts
-async def on_new_user(user):
-    user_id = user.id
-    user_name = user.first_name  # Or any other user identifier
-    await send_log_message(user_id , user_name)
+# Replace with your actual bot token and log channel ID
 
-# Note: Make sure to run this in an asynchronous context.
+LOG_CHANNEL_ID = -1002313688533 # Example log channel ID (must start with -100)
+
+NEW_USER_TXT = """#New_User {}
+
+≈ ɪᴅ:- {}
+≈ ɴᴀᴍᴇ:- {}"""
+
+async def send_new_user_log(user_id, user_name, bot: Bot):
+    """Sends a new user message to the log channel."""
+    try:
+        message_text = NEW_USER_TXT.format(user_name, user_id, user_name)
+        await bot.send_message(chat_id=LOG_CHANNEL_ID, text=message_text)
+    except Exception as e:
+       print(f"Error sending to log channel: {e}")
+
+
+
+
+#  Example Usage with a bot object
+
+# bot = Bot(token=BOT_TOKEN)
+
+# new_user_id = 123456789
+# new_user_name = "John Doe"
+
+# async def main():
+#     await send_new_user_log(new_user_id, new_user_name, bot)
+
+# if __name__ == '__main__':
+#     import asyncio
+#     asyncio.run(main())
