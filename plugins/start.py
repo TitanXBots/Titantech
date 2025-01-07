@@ -29,18 +29,7 @@ async def start_command(client: Client , message: Message):
             await add_user(user_id)
         except Exception as e:
             print(f"Error adding user: {e}")
-            pass
-
-    check_msg = collection.find_one({"admin_id": user_id})
-    if not check_msg and user_id not in ADMINS:
-        on_off = check_msg["maintenance"]
-        if on_off == 'on':
-            await message.reply_text("Maintenance mode is currently active. Please try again later.")
-            return
-        else:
-            await message.reply_text("Welcome to the bot!")
-    else:
-        await message.reply_text("Welcome to the bot!")
+            pass 
 
     text = message.text
     if len(text) > 7:
