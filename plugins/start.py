@@ -266,7 +266,7 @@ async def delete_files(messages , client , k):
 # Create a Pyrogram Client
 
 
-@Client.on_message(filters.command("start"))
+@Client.on_message(filters.command("get_file"))
 def handle_command(client, message):
     """Handle the command and create an inline keyboard."""
     command_parts = message.command
