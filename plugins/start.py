@@ -264,28 +264,27 @@ async def delete_files(messages , client , k):
 
         # Safeguard against k.command being None or having insuff
 # Create a Pyrogram Client
-
-
-@Client.on_message(filters.command('getfile') & filters.command)
-async def get_fileagain(client: Client , message: Message):
+# Safeguard against k.command being None or having insufficient 
+@Client.on_message(filters.command('getfile'))
+async def get_fileagain(client: Client, message: Message):
     """Handle the command and create an inline keyboard."""
-    command_parts = message.command
+    
+    command_parts = message.command[1:]  # Get all command parts after the command
+    command_part = command_parts[0] if command_parts else None  # Safeguard against empty command parts
 
-    # Safeguard against insufficient parts
-    if len(command_parts) > 1:
-        command_part = command_parts[1]
-        button_url = f"https://t.me/{client.get_me().username}?start={command_part}"
+    if command_part:
+        button_url = f"https://t.me/{client.username}?start={command_part}"
         keyboard = InlineKeyboardMarkup(
             [
                 [InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)]
             ]
         )
-        
-        # Send a message with the inline keyboard
-        message.reply_text(
-            "Here is your button:",
-            reply_markup=keyboard
-        )
     else:
-        # Handle the case where the command is invalid or insufficient
-        message.reply_text("Invalid command or insufficient parts.")
+        keyboard = None
+
+    # Edit message with the button
+    try:
+        await message.edit_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
+    except Exception as e:
+        logging.error(f"Error editing the message: {e}")
+        
