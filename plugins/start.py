@@ -282,3 +282,10 @@ async def delete_files(messages , client , k):
             logging.error(f"Error editing the message: {e}")
         except Exception as e:
             logging.error(f"An unexpected error occurred: {e}")
+
+
+
+def send_new_user_log(user_id, user_name, log_channel_id):
+     NEW_USER_TXT = """#New_User {}\n\n≈ ɪᴅ:- {}\n≈ ɴᴀᴍᴇ:- {}"""
+     message = NEW_USER_TXT.format(user_id, user_id, user_name)
+     bot.send_message(chat_id=log_channel_id, text=message)
