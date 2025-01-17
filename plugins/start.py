@@ -285,7 +285,30 @@ async def delete_files(messages , client , k):
 
 
 
-def send_new_user_log(user_id, user_name, log_channel_id):
-     NEW_USER_TXT = """#New_User {}\n\n≈ ɪᴅ:- {}\n≈ ɴᴀᴍᴇ:- {}"""
-     message = NEW_USER_TXT.format(user_id, user_id, user_name)
-     bot.send_message(chat_id=log_channel_id, text=message)
+
+# Replace with your log channel ID
+LOG_CHANNEL_ID = "-1002313688533"  # The chat ID of the log channel (can be found from @username or by ID)
+
+def format_new_user_message(user_id, user_name):
+    NEW_USER_TXT = """
+≈ ɪᴅ:- {}
+≈ ɴᴀᴍᴇ:- {}"""
+    
+    return NEW_USER_TXT.format(user_id, user_name)
+
+async def send_log_message(user_id, user_name):
+    message = format_new_user_message(user_id, user_name)
+    await app.send_message(LOG_CHANNEL_ID, message)
+
+@Client.on_message(filters.new_chat_members)
+async def new_member_handler(client, message):
+    for new_member in message.new_chat_members:
+        user_id = new_member.id
+        user_name = new_member.first_name
+        await send_log_message(user_id, user_name)
+
+# Start the client
+app = Client("my_bot")  # Replace with your session name or parameters
+
+if __name__ == "__main__":  # Corrected from if name == "main":
+    app.run()
