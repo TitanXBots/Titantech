@@ -262,53 +262,33 @@ async def delete_files(messages , client , k):
         except Exception as e:
             print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
 
-        # Safeguard against k.command being None or having insufficient parts
-    command_part = k.command[1] if k.command and len(k.command) > 1 else None
+        # Safeguard against k.command being None or having insuff
+# Create a Pyrogram Client
 
-    if command_part:
-        button_url = f"https://t.me/{client.username}?start={command_part}"
+
+@Client.on_message(filters.command("get_file"))
+def handle_command(client, message):
+    """Handle the command and create an inline keyboard."""
+    command_parts = message.command
+
+    # Safeguard against insufficient parts
+    if len(command_parts) > 1:
+        command_part = command_parts[1]
+        button_url = f"https://t.me/{client.get_me().username}?start={command_part}"
         keyboard = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!" , url=button_url)]
+                [InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)]
             ]
         )
+        
+        # Send a message with the inline keyboard
+        message.reply_text(
+            "Here is your button:",
+            reply_markup=keyboard
+        )
     else:
-        keyboard = None
+        # Handle the case where the command is invalid or insufficient
+        message.reply_text("Invalid command or insufficient parts.")
 
-        # Edit message with the button
-        try:
-            await k.edit_text("Your Video / File Is Successfully Deleted ✅" , reply_markup=keyboard)
-        except Exception as e:
-            logging.error(f"Error editing the message: {e}")
-        except Exception as e:
-            logging.error(f"An unexpected error occurred: {e}")
-
-
-
-
-# Replace with your log channel ID
-LOG_CHANNEL_ID = "-1002313688533"  # The chat ID of the log channel (can be found from @username or by ID)
-
-def format_new_user_message(user_id, user_name):
-    NEW_USER_TXT = """
-≈ ɪᴅ:- {}
-≈ ɴᴀᴍᴇ:- {}"""
-    
-    return NEW_USER_TXT.format(user_id, user_name)
-
-async def send_log_message(user_id, user_name):
-    message = format_new_user_message(user_id, user_name)
-    await app.send_message(LOG_CHANNEL_ID, message)
-
-@Client.on_message(filters.new_chat_members)
-async def new_member_handler(client, message):
-    for new_member in message.new_chat_members:
-        user_id = new_member.id
-        user_name = new_member.first_name
-        await send_log_message(user_id, user_name)
-
-# Start the client
-app = Client("my_bot")  # Replace with your session name or parameters
-
-if __name__ == "__main__":  # Corrected from if name == "main":
-    app.run()
+print("running")
+app.run()
