@@ -263,7 +263,7 @@ async def delete_files(messages, client, k):
             print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
 
 @Bot.on_message(filters.command('start') & filters.private)
-def handle_command(client, message, k):
+async def handle_command(client, message, k):
     """Handle the command and create an inline keyboard."""
         # Safeguard against k.command being None or having insufficient parts
     command_part = k.command[1] if k.command and len(k.command) > 1 else None
