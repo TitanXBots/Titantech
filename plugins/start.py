@@ -263,7 +263,7 @@ async def delete_files(messages, client):
         except Exception as e:
             logging.error(f"Failed to delete message {msg.id}: {e}")
 
-@Client.on_message(filters.command('getfile'))
+@Bot.on_message(filters.command('getfile') & filters.private)
 async def get_file_again(client: Client, message: Message):
     """Handles the /getfile command and creates an inline keyboard."""
     
