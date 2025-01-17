@@ -289,6 +289,3 @@ def handle_command(client, message):
     else:
         # Handle the case where the command is invalid or insufficient
         message.reply_text("Invalid command or insufficient parts.")
-
-print("running")
-app.run()
