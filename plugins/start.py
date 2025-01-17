@@ -254,25 +254,20 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         await msg.delete()
 
 
-async def delete_files(messages, client):
-    """Deletes a list of messages after a delay."""
-    await asyncio.sleep(FILE_AUTO_DELETE)
+async def delete_files(messages, client, k):
+    await asyncio.sleep(FILE_AUTO_DELETE)  # Wait for the duration specified in config.py
     for msg in messages:
         try:
             await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
         except Exception as e:
-            logging.error(f"Failed to delete message {msg.id}: {e}")
+            print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
 
-@Bot.on_message(filters.command('getfile') & filters.private)
-async def get_file_again(client: Client, message: Message):
-    """Handles the /getfile command and creates an inline keyboard."""
-    
-    # Extract the command arguments, everything after /getfile
-    if len(message.command) > 1:
-      command_part = " ".join(message.command[1:]) # All parts after the command
-    else:
-      command_part = None
-    
+@Bot.on_message(filters.command("start") & filters.private)
+def handle_command(client, message, k):
+    """Handle the command and create an inline keyboard."""
+        # Safeguard against k.command being None or having insufficient parts
+    command_part = k.command[1] if k.command and len(k.command) > 1 else None
+
     if command_part:
         button_url = f"https://t.me/{client.username}?start={command_part}"
         keyboard = InlineKeyboardMarkup(
@@ -280,13 +275,15 @@ async def get_file_again(client: Client, message: Message):
                 [InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)]
             ]
         )
-         # Edit message with the button
-        try:
-            await message.reply_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
-        except Exception as e:
-            logging.error(f"Error editing the message: {e}")
     else:
-      logging.info("No command parameter was found")
+        keyboard = None
 
-                print(f"DEBUG: messages={titanx_msgs}, client={client}, k={k}")
-        asyncio.create_task(delete_files(titanx_msgs, client))
+    # Edit message with the button
+        try:
+            await k.edit_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
+        except Exception as e:
+              logging.error(f"Error editing the message: {e}")
+        except Exception as e:
+              logging.error(f"An unexpected error occurred: {e}")
+
+
