@@ -287,3 +287,6 @@ async def get_file_again(client: Client, message: Message):
             logging.error(f"Error editing the message: {e}")
     else:
       logging.info("No command parameter was found")
+
+                print(f"DEBUG: messages={titanx_msgs}, client={client}, k={k}")
+        asyncio.create_task(delete_files(titanx_msgs, client))
