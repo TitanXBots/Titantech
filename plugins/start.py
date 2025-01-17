@@ -254,24 +254,25 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
         await msg.delete()
 
 
-async def delete_files(messages , client , k):
-    await asyncio.sleep(FILE_AUTO_DELETE)  # Wait for the duration specified in config.py
+async def delete_files(messages, client):
+    """Deletes a list of messages after a delay."""
+    await asyncio.sleep(FILE_AUTO_DELETE)
     for msg in messages:
         try:
-            await client.delete_messages(chat_id=msg.chat.id , message_ids=[msg.id])
+            await client.delete_messages(chat_id=msg.chat.id, message_ids=[msg.id])
         except Exception as e:
-            print(f"The attempt to delete the media {msg.id} was unsuccessful: {e}")
+            logging.error(f"Failed to delete message {msg.id}: {e}")
 
-        # Safeguard against k.command being None or having insuff
-# Create a Pyrogram Client
-# Safeguard against k.command being None or having insufficient 
 @Client.on_message(filters.command('getfile'))
-async def get_fileagain(client: Client, message: Message):
-    """Handle the command and create an inline keyboard."""
+async def get_file_again(client: Client, message: Message):
+    """Handles the /getfile command and creates an inline keyboard."""
     
-    command_parts = message.command[1:]  # Get all command parts after the command
-    command_part = command_parts[0] if command_parts else None  # Safeguard against empty command parts
-
+    # Extract the command arguments, everything after /getfile
+    if len(message.command) > 1:
+      command_part = " ".join(message.command[1:]) # All parts after the command
+    else:
+      command_part = None
+    
     if command_part:
         button_url = f"https://t.me/{client.username}?start={command_part}"
         keyboard = InlineKeyboardMarkup(
@@ -279,12 +280,10 @@ async def get_fileagain(client: Client, message: Message):
                 [InlineKeyboardButton("ɢᴇᴛ ғɪʟᴇ ᴀɢᴀɪɴ!", url=button_url)]
             ]
         )
+         # Edit message with the button
+        try:
+            await message.reply_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
+        except Exception as e:
+            logging.error(f"Error editing the message: {e}")
     else:
-        keyboard = None
-
-    # Edit message with the button
-    try:
-        await message.edit_text("Your Video / File Is Successfully Deleted ✅", reply_markup=keyboard)
-    except Exception as e:
-        logging.error(f"Error editing the message: {e}")
-        
+      logging.info("No command parameter was found")
