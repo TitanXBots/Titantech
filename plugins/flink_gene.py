@@ -2,7 +2,6 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 
-app = Client("my_bot")  # Replace "my_bot" with your bot's name
 
 # Command to start the link generation process
 @Client.on_message(filters.command("flink") & filters.private)
@@ -52,6 +51,3 @@ def is_admin(user_id):
     # For example, check against a list of admin user IDs
     admin_ids = [5356695781]  # Replace with your admin user IDs
     return user_id in admin_ids
-
-# Start the bot
-app.run()
