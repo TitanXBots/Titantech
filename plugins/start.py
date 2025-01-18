@@ -282,32 +282,3 @@ async def delete_files(messages, client, k):
               logging.error(f"Error editing the message: {e}")
         except Exception as e:
               logging.error(f"An unexpected error occurred: {e}")
-
-
-
-
-# Replace with your log channel ID (must be an integer)
-LOG_CHANNEL_ID = -1001234567890 # Replace with your log channel ID (must be an integer)
-
-NEW_USER_TXT = """#New_User {}
-
-≈ ɪᴅ:- {}
-≈ ɴᴀᴍᴇ:- {}"""
-
-
-@Bot.on_message(filters.new_chat_members)
-async def new_user(client: Client, message: Message):
-    for user in message.new_chat_members:
-        user_id = user.id
-        user_name = user.first_name
-        if user.last_name:
-            user_name += " " + user.last_name
-        
-        # Format the log message with user details
-        log_message = NEW_USER_TXT.format(user_name, user_id, user_name)
-
-        # Send the message to your log channel
-        try:
-           await Bot.send_message(chat_id=LOG_CHANNEL_ID, text=log_message)
-        except Exception as e:
-           print(f"Failed to send to log channel: {e}")
