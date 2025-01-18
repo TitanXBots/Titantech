@@ -6,12 +6,9 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import UserNotParticipant
 from typing import Dict, Optional
 
-# --- Configuration ---
-API_ID =  # Your API ID
-API_HASH =  # Your API HASH
-BOT_TOKEN =  # Your Bot Token
-DATABASE_CHANNEL_ID =  # Your Database Channel ID (Integer)
-ADMIN_IDS = [ ]  # List of admin user IDs (Integers)
+
+DATABASE_CHANNEL_ID =  '-1002096962621'# Your Database Channel ID (Integer)
+ADMIN_IDS = [5356695781]  # List of admin user IDs (Integers)
 
 # --- State Management ---
 user_states: Dict[int, dict] = {}
@@ -20,8 +17,6 @@ user_states: Dict[int, dict] = {}
 FORMAT_REGEX = re.compile(r"^(\s*[0-9]+[pP](?:=| =)\s*\d+\s*(?:,\s*)?)+$", re.IGNORECASE)
 RESOLUTION_REGEX = re.compile(r"([0-9]+[pP])(?:=| =)(\d+)", re.IGNORECASE)
 
-# --- Pyrogram Client Setup ---
-app = Client("link_generator_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 # --- Admin Check Function ---
 async def is_admin(client: Client, user_id: int) -> bool:
@@ -61,7 +56,7 @@ async def get_messages_from_post(client: Client, post_link: str) -> Optional[lis
        return None
 
 # --- /flink Command Handler ---
-@app.on_message(filters.command("flink") & filters.private)
+@Client.on_message(filters.command("flink") & filters.private)
 async def flink_command(client: Client, message: types.Message):
     user_id = message.from_user.id
     if not await is_admin(client, user_id):
@@ -77,7 +72,7 @@ async def flink_command(client: Client, message: types.Message):
 
 
 # --- set_format Callback Handler ---
-@app.on_callback_query(filters.regex("set_format"))
+@Client.on_callback_query(filters.regex("set_format"))
 async def set_format_callback(client: Client, callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     if user_id not in user_states:
@@ -90,7 +85,7 @@ async def set_format_callback(client: Client, callback_query: types.CallbackQuer
 
 
 # --- Format Input Handler ---
-@app.on_message(filters.text & filters.private)
+@Client.on_message(filters.text & filters.private)
 async def format_input(client: Client, message: types.Message):
     user_id = message.from_user.id
     if user_id not in user_states or user_states[user_id].get("state") != "waiting_for_format":
@@ -111,7 +106,7 @@ async def format_input(client: Client, message: types.Message):
 
 
 # --- start_process Callback Handler ---
-@app.on_callback_query(filters.regex("start_process"))
+@Client.on_callback_query(filters.regex("start_process"))
 async def start_process_callback(client: Client, callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
 
@@ -129,7 +124,7 @@ async def start_process_callback(client: Client, callback_query: types.CallbackQ
 
 
 # --- Post Link Handler ---
-@app.on_message(filters.text & filters.private)
+@Client.on_message(filters.text & filters.private)
 async def post_link_handler(client: Client, message: types.Message):
     user_id = message.from_user.id
     if user_id not in user_states or user_states[user_id].get("state") != "waiting_for_post_link":
@@ -176,20 +171,15 @@ async def post_link_handler(client: Client, message: types.Message):
        del user_states[user_id]  # Clear user state when process complete
 
 # --- Refresh Button (Not fully implemented yet) ---
-@app.on_callback_query(filters.regex("refresh_link"))
+@Client.on_callback_query(filters.regex("refresh_link"))
 async def refresh_link_callback(client: Client, callback_query: types.CallbackQuery):
     # Implement logic to refresh links
     await callback_query.answer("Refresh functionality is not fully implemented yet.")
 
 # --- Cancel Command Handler ---
-@app.on_message(filters.text & filters.regex(r"^CANCEL$") & filters.private)
+@Client.on_message(filters.text & filters.regex(r"^CANCEL$") & filters.private)
 async def cancel_command(client: Client, message: types.Message):
     user_id = message.from_user.id
     if user_id in user_states:
         del user_states[user_id]
     await message.reply("Operation canceled.")
-
-# --- Run the Client ---
-if __name__ == "__main__":
-    print("Bot is running...")
-    app.run()
