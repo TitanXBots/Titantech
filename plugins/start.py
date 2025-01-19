@@ -299,15 +299,7 @@ def is_admin(user_id):
     return user_id in ADMIN_IDS
 
 
-@Bot.on_message(filters.command("start"))
-async def start_command(client: Client, message: Message):
-    if message.from_user.id in banned_users:
-        await message.reply("You are banned from using this bot.")
-        return
-    await message.reply(f"Hello, {message.from_user.first_name}! Welcome to the bot.")
-
-
-@Bot.on_message(filters.command("ban"))
+@Client.on_message(filters.command("ban"))
 async def ban_command(client: Client, message: Message):
     if not is_admin(message.from_user.id):
         await message.reply("You are not an admin and can't use this command.")
@@ -335,7 +327,7 @@ async def ban_command(client: Client, message: Message):
     banned_users.add(user_id_to_ban)
     await message.reply(f"User ID {user_id_to_ban} has been banned.")
 
-@Bot.on_message(filters.command("unban"))
+@Client.on_message(filters.command("unban"))
 async def unban_command(client: Client, message: Message):
     if not is_admin(message.from_user.id):
          await message.reply("You are not an admin and can't use this command.")
@@ -361,7 +353,7 @@ async def unban_command(client: Client, message: Message):
     await message.reply(f"User ID {user_id_to_unban} has been unbanned.")
 
 
-@Bot.on_message(filters.text)
+@Client.on_message(filters.text)
 async def handle_messages(client: Client, message: Message):
     if message.from_user.id in banned_users:
         await message.reply("You are banned from using this bot.")
