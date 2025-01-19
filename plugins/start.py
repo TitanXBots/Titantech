@@ -282,3 +282,89 @@ async def delete_files(messages, client, k):
               logging.error(f"Error editing the message: {e}")
         except Exception as e:
               logging.error(f"An unexpected error occurred: {e}")
+
+
+
+
+
+# Replace with your admin user IDs
+ADMIN_IDS = [5356695781]
+
+# Set to store banned user IDs
+banned_users = set()
+
+
+# Function to check if a user is an admin
+def is_admin(user_id):
+    return user_id in ADMIN_IDS
+
+
+@Bot.on_message(filters.command("start"))
+async def start_command(client: Client, message: Message):
+    if message.from_user.id in banned_users:
+        await message.reply("You are banned from using this bot.")
+        return
+    await message.reply(f"Hello, {message.from_user.first_name}! Welcome to the bot.")
+
+
+@Bot.on_message(filters.command("ban"))
+async def ban_command(client: Client, message: Message):
+    if not is_admin(message.from_user.id):
+        await message.reply("You are not an admin and can't use this command.")
+        return
+
+    if message.reply_to_message:
+        user_id_to_ban = message.reply_to_message.from_user.id
+    elif len(message.command) > 1:
+        try:
+            user_id_to_ban = int(message.command[1])
+        except ValueError:
+            await message.reply("Invalid user ID format. Please specify a user ID or reply to a user.")
+            return
+    else:
+        await message.reply("Please specify a user ID or reply to a user.")
+        return
+
+    if user_id_to_ban in ADMIN_IDS:
+        await message.reply("You can't ban an admin.")
+        return
+    if user_id_to_ban in banned_users:
+        await message.reply("This user is already banned.")
+        return
+
+    banned_users.add(user_id_to_ban)
+    await message.reply(f"User ID {user_id_to_ban} has been banned.")
+
+@Bot.on_message(filters.command("unban"))
+async def unban_command(client: Client, message: Message):
+    if not is_admin(message.from_user.id):
+         await message.reply("You are not an admin and can't use this command.")
+         return
+    
+    if message.reply_to_message:
+        user_id_to_unban = message.reply_to_message.from_user.id
+    elif len(message.command) > 1:
+        try:
+            user_id_to_unban = int(message.command[1])
+        except ValueError:
+            await message.reply("Invalid user ID format. Please specify a user ID or reply to a user.")
+            return
+    else:
+        await message.reply("Please specify a user ID or reply to a user.")
+        return
+
+    if user_id_to_unban not in banned_users:
+        await message.reply("This user is not banned.")
+        return
+
+    banned_users.remove(user_id_to_unban)
+    await message.reply(f"User ID {user_id_to_unban} has been unbanned.")
+
+
+@Bot.on_message(filters.text)
+async def handle_messages(client: Client, message: Message):
+    if message.from_user.id in banned_users:
+        await message.reply("You are banned from using this bot.")
+        
+    # Process other non-command messages here if needed
+    # await message.reply("hello") # Test if not banned
