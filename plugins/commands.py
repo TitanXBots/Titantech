@@ -32,6 +32,7 @@ def unban_user(client, message: Message):
         message.reply_text(f"User {user_id} is not banned.")
 
 # Check if the user is banned before processing commands
+
 @Client.on_message(filters.command("start")
 def check_ban(client, message: Message):
     user_id = message.from_user.id
