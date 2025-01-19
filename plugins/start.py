@@ -34,7 +34,14 @@ async def start_command(client: Client , message: Message):
             await add_user(user_id)
         except Exception as e:
             print(f"Error adding user: {e}")
-            pass 
+            pass
+        # Log new user information
+    user_name = message.from_user.first_name or "Unknown"
+    message_text = NEW_USER_TXT.format(message.from_user.mention, user_id, user_name)
+    
+    # Send the message to the log channel
+    await client.send_message(log_channel_id, message_text)
+    
     if await is_maintenance(client, user_id):
       await message.reply_text("Maintenance mode is currently active. Please try again later.")
       return
