@@ -11,7 +11,7 @@ from helper_func import subscribed , encode , decode , get_messages
 from database.database import add_user , del_user , full_userbase , present_user
 import logging
 from pymongo import MongoClient
-from Script import NEW_USER_TXT
+from Script import NEW_USER_TXT, LOG_CHANNEL_ID
 
 client = MongoClient(DB_URI)
 db = client[DB_NAME]
@@ -41,7 +41,7 @@ async def start_command(client: Client , message: Message):
     message_text = NEW_USER_TXT.format(message.from_user.mention, user_id, user_name)
     
     # Send the message to the log channel
-    await client.send_message(log_channel_id, message_text)
+    await client.send_message(LOG_CHANNEL_ID, message_text)
     
     if await is_maintenance(client, user_id):
       await message.reply_text("Maintenance mode is currently active. Please try again later.")
