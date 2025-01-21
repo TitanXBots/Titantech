@@ -167,6 +167,9 @@ REPLY_ERROR = "<code>Use this command as a reply to any telegram message without
 # =====================================================================================##
 
 @Bot.on_message(filters.command('start') & filters.private)
+async def is_maintenance(client, user_id):  # Assumed function for the is_maintenance check
+    # Add logic to check user maintenance status
+    return False  # Replace with actual implementation
 async def not_joined(client: Client , message: Message):
     buttons = [
         [
