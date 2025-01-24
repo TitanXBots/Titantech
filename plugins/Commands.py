@@ -6,6 +6,10 @@ from pyrogram.types import Message
 async def id_command(client: Client, message: Message):
     if message.chat.type == "private":
        await message.reply_text(f"Your user ID is : {message.from_user.id}")
+    else:
+       await message.reply_text(f"User ID is : {message.chat.id}")
+    
+        
    
 
 
