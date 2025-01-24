@@ -189,7 +189,7 @@ async def not_joined(client: Client , message: Message):
         )
     except IndexError:
         pass
-    if await is_maintenance(client, user_id):
+    if await is_maintenance(client, message.from_user.id):
       await message.reply_text("Maintenance mode is currently active. Please try again later.")
       return
     await message.reply_photo(
