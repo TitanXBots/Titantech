@@ -1,18 +1,13 @@
+
 from pyrogram import Client, filters
 from pyrogram.types import Message
-
 
 @Client.on_message(filters.command("id"))
 async def id_command(client: Client, message: Message):
     if message.chat.type == "private":
-       await message.reply_text(f"Your user ID is : {message.from_user.id}")
+        await message.reply_text(f"Your user ID is: {message.from_user.id}")
     else:
-       await message.reply_text(f"Your user ID is : {message.chat.id}")
-    
-        
-   
-
-
+        await message.reply_text(f"Your chat ID is: {message.chat.id}")
 
 # --- Bot Run ---
 if __name__ == "__main__":
