@@ -14,15 +14,13 @@ ADMIN_IDS = [5356695781]
 admin_ids_str = os.environ.get("ADMIN_IDS")
 if admin_ids_str:
     try:
-        ADMIN_IDS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]
+        ADMIN_IDS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]  # Split by comma
     except ValueError as e:
         logging.error(f"Invalid ADMIN_IDS value: {admin_ids_str}.  Error: {e}")
         # You might want to exit the program here if ADMIN_IDS is critical
-        #raise  # Uncomment this to re-raise the exception after logging if needed
+        # raise  # Uncomment this to re-raise the exception after logging if needed
 else:
     logging.warning("ADMIN_IDS environment variable not set.  No admins will be recognized.")
-
-
 
 
 @Client.on_message(filters.command("id"))
@@ -30,11 +28,8 @@ async def id_command(client, message):
     logging.info(f"Received /id command from user: {message.from_user.id}")
     try:
         user_id = message.from_user.id
-        user_name = message.from_user.first_name or "User"
 
         await message.reply_text(f"Your User ID is: {user_id}")
-        if ADMIN_IDS:  # Check if ADMIN_IDS is not empty
-            await client.send_message(ADMIN_IDS[0], f"{user_name} (User ID: {user_id}) has requested their ID.")
 
 
         if user_id in ADMIN_IDS:
@@ -45,6 +40,7 @@ async def id_command(client, message):
         await message.reply_text("An error occurred. Please try again later.")
 
 async def main():
+    # Assuming 'app' is defined and initialized correctly elsewhere in your code
     await app.start()
     print("Bot started. Press Ctrl+C to exit.")
     await asyncio.idle()  # Keep the bot running
@@ -52,4 +48,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    # Assuming 'app' is defined and initialized correctly elsewhere in your code
+    # For example:
+    # app = Client("my_bot", api_id=YOUR_API_ID, api_hash=YOUR_API_HASH)
     asyncio.run(main())
