@@ -14,7 +14,7 @@ ADMIN_IDS = [5356695781]
 admin_ids_str = os.environ.get("ADMIN_IDS")
 if admin_ids_str:
     try:
-        ADMIN_IDS = [int(admin_id.strip()) for admin_id in admin_ids_str.split(",")]
+        ADMIN_IDS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]
     except ValueError as e:
         logging.error(f"Invalid ADMIN_IDS value: {admin_ids_str}.  Error: {e}")
         # You might want to exit the program here if ADMIN_IDS is critical
