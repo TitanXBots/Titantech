@@ -1,1 +1,1 @@
-web: Python3 main.py && python3 hold.py
+web: python3 main.py
