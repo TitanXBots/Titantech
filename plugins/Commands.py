@@ -2,6 +2,7 @@ import logging
 import os
 import asyncio  # Import asyncio
 from pyrogram import Client, filters
+from config import ADMINS
 
 # Configure logging
 logging.basicConfig(
@@ -10,17 +11,17 @@ logging.basicConfig(
 )
 
 # Load configuration from environment variables
-ADMIN_IDS = [5356695781]
-admin_ids_str = os.environ.get("ADMIN_IDS")
+ADMINS = [5356695781]
+admin_ids_str = os.environ.get("ADMINS")
 if admin_ids_str:
     try:
-        ADMIN_IDS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]  # Split by comma
+        ADMINS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]  # Split by comma
     except ValueError as e:
-        logging.error(f"Invalid ADMIN_IDS value: {admin_ids_str}.  Error: {e}")
+        logging.error(f"Invalid ADMINS value: {admin_ids_str}.  Error: {e}")
         # You might want to exit the program here if ADMIN_IDS is critical
         # raise  # Uncomment this to re-raise the exception after logging if needed
 else:
-    logging.warning("ADMIN_IDS environment variable not set.  No admins will be recognized.")
+    logging.warning("ADMINS environment variable not set.  No admins will be recognized.")
 
 
 @Client.on_message(filters.command("id"))
@@ -32,8 +33,8 @@ async def id_command(client, message):
         await message.reply_text(f"Your User ID is: {user_id}")
 
 
-        if user_id in ADMIN_IDS:
-            await message.reply_text(f"You are an admin! Admin User IDs are: {ADMIN_IDS}")
+        if user_id in ADMINS:
+            await message.reply_text(f"You are an admin! Admin User IDs are: {ADMINS}")
 
     except Exception as e:
         logging.error(f"Error processing /id command: {type(e).__name__}: {e}")
