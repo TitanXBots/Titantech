@@ -11,7 +11,7 @@ logging.basicConfig(
 )
 
 # Load configuration from environment variables
-ADMINS = [5356695781]
+
 admin_ids_str = os.environ.get("ADMINS")
 if admin_ids_str:
     try:
