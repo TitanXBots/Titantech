@@ -50,6 +50,8 @@ Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !
 ⏰ Tɪᴍᴇ : {time}
 🌐 Tɪᴍᴇᴢᴏɴᴇ : Asia/Kolkata
 🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs: v2.7.1 [ Sᴛᴀʙʟᴇ ]
+
+Bʏ @TitanXBots
 """
 
 
