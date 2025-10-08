@@ -15,7 +15,8 @@ logging.basicConfig(
 admin_ids_str = os.environ.get("ADMINS")
 if admin_ids_str:
     try:
-        ADMINS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]  # Split by comma
+        #ADMINS = [int(admin_id.strip()) for admin_id in admin_ids_str.split("5356695781")]  # Split by comma
+        pass
     except ValueError as e:
         logging.error(f"Invalid ADMINS value: {admin_ids_str}.  Error: {e}")
         # You might want to exit the program here if ADMIN_IDS is critical
