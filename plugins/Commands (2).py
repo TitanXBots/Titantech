@@ -22,7 +22,7 @@ if admin_ids_str:
         # You might want to exit the program here if ADMIN_IDS is critical
         # raise  # Uncomment this to re-raise the exception after logging if needed
 else:
-    logging.warning("ADMINS environment variable not set.  No admins will be recognized.")
+    logging.warning("ADMINS environment variable not set.  Using ADMINS from config.py.")
 
 
 @Client.on_message(filters.command("id"))
