@@ -1,6 +1,7 @@
 from pyrogram import Client
 from bot import Bot
 from config import *
+from script import *
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from database.database import add_user, del_user, full_userbase, present_user
 
@@ -29,6 +30,25 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                     [
                         InlineKeyboardButton("⚓ ʜᴏᴍᴇ", callback_data="start"),
                         InlineKeyboardButton("⚡ ᴄʟᴏꜱᴇ", callback_data="close")
+                    ],
+                    [
+                        InlineKeyboardButton("⚠️ ᴅɪꜱᴄʟᴀɪᴍᴇʀ", callback_data="disclaimer") # Added Disclaimer button
+                    ]
+                ]
+            )
+        )
+    elif data == "disclaimer": # New block for disclaimer
+        await query.message.edit_text(
+            text=DISCLAIMER_TXT, # Use the new DISCLAIMER_TXT
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("⚓ ʜᴏᴍᴇ", callback_data="start"),
+                        InlineKeyboardButton("⚡ ᴄʟᴏꜱᴇ", callback_data="close")
+                    ],
+                    [
+                        InlineKeyboardButton("🔰 ᴀʙᴏᴜᴛ", callback_data="about") # Option to go back to About
                     ]
                 ]
             )
