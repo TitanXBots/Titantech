@@ -139,7 +139,7 @@ async def handle_back_callback(update: Update, context: ContextTypes.DEFAULT_TYP
 def main() -> None:
     """Starts the bot."""
     # Replace "YOUR_BOT_TOKEN" with your actual bot token
-    application = Application.builder().token("YOUR_BOT_TOKEN").build()
+    application = Application.builder().token("7701286571:AAHmZpW5TDrJSF61bWQ_GT0oE5zzjH86EKo").build()
 
     # Register command handlers
     application.add_handler(CommandHandler("settings", protect_content_command))
