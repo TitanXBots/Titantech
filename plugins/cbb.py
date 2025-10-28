@@ -1,7 +1,6 @@
 from pyrogram import Client
 from bot import Bot
 from config import *
-from Script import *
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from database.database import add_user, del_user, full_userbase, present_user
 
