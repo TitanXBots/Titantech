@@ -4,43 +4,43 @@ from config import *
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from database.database import add_user, del_user, full_userbase, present_user
 
+from pyrogram.errors import MessageNotModified
+
 @Bot.on_callback_query()
-async def cb_handler(client: Bot, query: CallbackQuery):
+async def cb_handler(client, query):
     data = query.data
-    await query.answer()
+    await query.answer()  # always acknowledge the callback
+
     try:
         if data == "help":
-        await query.message.edit_text(
-            text=HELP_TXT.format(first=query.from_user.first_name),
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
+            await query.message.edit_text(
+                text=HELP_TXT.format(first=query.from_user.first_name),
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup([
                     [
                         InlineKeyboardButton("⚓ ʜᴏᴍᴇ", callback_data="start"),
                         InlineKeyboardButton("⚡ ᴄʟᴏꜱᴇ", callback_data="close")
                     ]
-                ]
+                ])
             )
-        )
-    elif data == "about":
-        await query.message.edit_text(
-            text=ABOUT_TXT.format(first=query.from_user.first_name),
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
+
+        elif data == "about":
+            await query.message.edit_text(
+                text=ABOUT_TXT.format(first=query.from_user.first_name),
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup([
                     [
                         InlineKeyboardButton("⚓ ʜᴏᴍᴇ", callback_data="start"),
                         InlineKeyboardButton("⚡ ᴄʟᴏꜱᴇ", callback_data="close")
                     ]
-                ]
+                ])
             )
-        )
-    elif data == "start":
-        await query.message.edit_text(
-            text=START_MSG.format(first=query.from_user.first_name),
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
+
+        elif data == "start":
+            await query.message.edit_text(
+                text=START_MSG.format(first=query.from_user.first_name),
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup([
                     [
                         InlineKeyboardButton("☆ ᴍᴏᴠɪᴇ ʀᴇQᴜᴇꜱᴛ ɢʀᴏᴜᴘ ☆", url="https://t.me/TitanMoviess")
                     ],
@@ -49,7 +49,7 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                         InlineKeyboardButton("🔰 ᴀʙᴏᴜᴛ", callback_data="about")
                     ],
                     [
-                        InlineKeyboardButton("🧑‍💻 ᴄᴏɴᴛᴀᴄᴛ ᴏᴡɴᴇʀ", user_id=5356695781),
+                        InlineKeyboardButton("🧑‍💻 ᴄᴏɴᴛᴀᴄᴛ ᴏᴡɴᴇʀ", url="tg://user?id=5356695781"),
                         InlineKeyboardButton("🔐 ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ", url="https://github.com/TitanXBots/FileStore-Bot")
                     ],
                     [
@@ -59,12 +59,19 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                     [
                         InlineKeyboardButton("ʜᴏᴡ ᴛᴏ ᴜꜱᴇ ʙᴏᴛ", url="https://t.me/TitanXBackup/33")
                     ]
-                ]
+                ])
             )
-        )
-    elif data == "close":
-        await query.message.delete()
-        try:
-            await query.message.reply_to_message.delete()
-        except:
-            pass
+
+        elif data == "close":
+            await query.message.delete()
+            try:
+                await query.message.reply_to_message.delete()
+            except:
+                pass
+
+        else:
+            await query.answer("Unknown action!", show_alert=True)
+
+    except MessageNotModified:
+        # Ignore harmless Telegram error
+        pass
