@@ -1,6 +1,7 @@
 from pyrogram import Client, filters, enums
 from pyrogram.types import *
 from pyrogram.errors import *
+import os
 
 F_SUB1 = int(os.environ.get('F_SUB1', ''))
 F_SUB2 = int(os.environ.get('F_SUB2', ''))
@@ -48,4 +49,5 @@ async def join_channels(client: Client, message: Message):
     else:
 
         await message.reply_text(response)
+
 
