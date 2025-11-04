@@ -12,9 +12,6 @@ from database.database import add_user , del_user , full_userbase , present_user
 import logging
 from pymongo import MongoClient
 
-client = MongoClient(DB_URI)
-db = client[DB_NAME]
-collection = db["TelegramFiles"]
 
 titanxofficials = FILE_AUTO_DELETE
 titandeveloper = titanxofficials
