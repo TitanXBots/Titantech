@@ -7,6 +7,11 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
+NEW_USER_TXT = """#New_User {}
+
+≈ ɪᴅ:- {}
+≈ ɴᴀᴍᴇ:- {}"""
+
 
 #Bot token @Botfather
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7714145122:AAEBw68X1UYfHSe5pY-uzf7YMHH7qS1e_Qw")
