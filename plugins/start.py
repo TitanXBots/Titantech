@@ -11,7 +11,6 @@ from helper_func import subscribed , encode , decode , get_messages
 from database.database import add_user , del_user , full_userbase , present_user
 import logging
 from pymongo import MongoClient
-from Script import NEW_USER_TXT
 
 client = MongoClient(DB_URI)
 db = client[DB_NAME]
